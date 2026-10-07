@@ -1,0 +1,110 @@
+1. Implement Depth Search Technique. 
+
+# =====================================================================
+# PART 1: The DFS Algorithm
+# =====================================================================
+
+# We define a function called 'dfs'. It needs three pieces of information:
+# 1. visited: A 'set' that remembers nodes we have already seen.
+# 2. graph: Our graph, stored as a dictionary.
+# 3. node: The current node we are standing on.
+def dfs(visited, graph, node):
+    
+    # Check if we have NEVER visited this current node before.
+    if node not in visited:
+        
+        # Print the node to the screen! 
+        # (end=" " tells Python to print on the same line with a space, not a new line)
+        print(node, end=" ")
+        
+        # Add this node to our 'visited' memory so we never process it twice.
+        visited.add(node)
+        
+        # Look at the graph dictionary and get all the neighbors of our current node.
+        # We use graph.get(node, []) just in case a node has absolutely no neighbors.
+        for neighbor in graph.get(node, []):
+            
+            # RECURSION: We call this exact same function again for the neighbor!
+            # This is what forces the computer to go "deep" down the path immediately.
+            dfs(visited, graph, neighbor)
+
+
+# =====================================================================
+# PART 2: Taking Your Input to Build the Graph
+# =====================================================================
+
+# We create an empty dictionary. This will store all our nodes and connections.
+my_graph = {}
+
+print("Welcome to the DFS Builder!")
+
+# Ask the user how many edges (connections) their graph has.
+# input() gets text from the user, and int() turns that text into a number.
+num_edges = int(input("How many edges (connections) does your graph have? "))
+
+print("Enter each edge separated by a space (Example: typing 'A B' means A points to B).")
+
+# We create a loop that runs exactly as many times as the number of edges.
+for i in range(num_edges):
+    
+    # Get the user's text, split it into two pieces at the space, 
+    # and assign the first piece to 'u' and the second to 'v'.
+    u, v = input(f"Edge {i+1}: ").split()
+    
+    # If the starting node 'u' is not in our dictionary yet...
+    if u not in my_graph:
+        
+        # ...we add it, and give it an empty list to hold its future neighbors.
+        my_graph[u] = []
+        
+    # We take the neighbor 'v' and add it to the list of connections for 'u'.
+    my_graph[u].append(v)
+
+
+# =====================================================================
+# PART 3: Running the Search!
+# =====================================================================
+
+# Ask the user which node they want to start the search from.
+start_node = input("\nWhich node would you like to start the search from? ")
+
+# We create an empty 'set' to keep track of where we have been.
+# Sets are perfect for this because they don't allow duplicate items.
+visited_nodes = set()
+
+print("\nHere is your Depth First Search path:")
+
+# Finally, we trigger the algorithm by calling our function with the starting information!
+dfs(visited_nodes, my_graph, start_node)
+
+
+
+
+Input:
+Prompt 1:
+How many edges (connections) does your graph have? 5
+
+Prompt 2:
+Enter each edge separated by a space (Example: typing 'A B' means A points to B).
+Edge 1: A B
+
+Prompt 3:
+Edge 2: A C
+
+Prompt 4:
+Edge 3: B D
+
+Prompt 5:
+Edge 4: B E
+
+Prompt 6:
+Edge 5: C F
+
+Prompt 7:
+Which node would you like to start the search from? A
+
+
+
+Output:
+Here is your Depth First Search path:
+A B D E C F
